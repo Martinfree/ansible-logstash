@@ -1,4 +1,4 @@
-logstash_ip: 172.24.201.34 
+logstash_ip: 172.24.201.35
 logst_port: 7896
 logst_plugin_path: conf.d/*.conf
 logst_workers: 2
