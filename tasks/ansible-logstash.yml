@@ -1,0 +1,16 @@
+- name: "Install logstash"
+  apt:
+    name: logstash
+  tags:
+    - logstash
+
+- name: "Symlink to logstash"
+  shell: "ln -s /usr/share/logstash/bin/logstash /usr/bin/"
+  ignore_errors: yes
+
+- name: "Start logstash"  
+  service: 
+    name: logstash
+    state: started
+  tags:
+    - logstash

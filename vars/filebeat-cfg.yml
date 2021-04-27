@@ -1,0 +1,5 @@
+filebeat: true
+filebeat_service: nginx system
+filebeat_path: /etc/filebeat/
+
+

@@ -1,0 +1,68 @@
+---
+
+- name: "Install logstash"
+  hosts: logstash-server
+  gather_facts: yes
+  become: yes
+  tasks:
+    - include_vars: ../vars/install-variables.yml 
+    - import_tasks: ansible-install-dep.yml
+  
+- name: "Config logstash with beats"
+  hosts: logstash-server
+  gather_facts: yes
+  become: yes
+  tasks:
+    - include_vars: ../vars/logstash-cfg.yml
+    - include_vars: ../vars/elastic-cfg.yml
+    - import_tasks: ansible-logstash.yml
+    
+    - name: "Config logstash javammachine"
+      template:
+        src: ../templates/logst-jvm.options.yml.j2
+        dest: "/etc/logstash/jvm.options"
+    
+    - name: "Config logstash pipeline"
+      template:
+        src: ../templates/logstash-pipelines.yml.j2
+        dest: "/etc/logstash/pipelines.yml"
+    
+        ### This is useless now
+        #    - name: "Config logstash.yml"
+        #template:
+        #src: ../templates/logstash.yml.j2
+        #dest: "/etc/logstash/config/"
+    
+    - name: "logstash deamon"
+      template: 
+        src: ../templates/logstash-conf/logstash.service
+        dest: "/etc/systemd/system/logstash.service"
+    - name: "logst serv"
+      shell: "systemctl daemon-reload"
+    
+    - name: "logstash plugins configs"
+      template: 
+        src: ../templates/logstash-conf/10-input.conf.j2
+        dest: "/etc/logstash/conf.d/10-input.conf"
+    - name: "logstash plugins configs"
+      template: 
+        src: ../templates/logstash-conf/20-filter.conf.j2
+        dest: "/etc/logstash/conf.d/20-filter.conf"
+    - name: "logstash plugins configs"
+      template: 
+        src: ../templates/logstash-conf/30-output.conf.j2
+        dest: "/etc/logstash/conf.d/30-output.conf"
+    
+- name: "Setup filebeat server"
+  hosts: filebeat-server
+  gather_facts: yes
+  become: yes
+    - include_vars: ../vars/logstash-cfg.yml
+    - include_vars: ../vars/filebeat-cfg.yml
+
+    - import_tasks: ansible-filebeats.yml
+    - name: "Copy default settings"
+      template:
+        src: ../templates/beats-conf/filebeat.yml.j2
+        dest: "/etc/filebeat/filebeat.yml"
+

@@ -1,0 +1,28 @@
+---
+
+- name: "install gnupg"
+  apt:
+    name: gnupg
+    state: present
+
+- name: "add GPG key"
+  apt_key:
+    url: "{{ GPG_KEY }}"
+    state: present
+
+- name:
+  apt:
+    name: apt-transport-https
+    state: latest
+
+- name: "add elastic repo"
+  shell: "echo deb 'https://artifacts.elastic.co/packages/7.x/apt stable main' \
+          | sudo tee /etc/apt/sources.list.d/elastic-7.x.list"
+
+
+- name: "Install java"
+  apt:
+    name: default-jre
+    state: latest
+    update_cache: yes
+
