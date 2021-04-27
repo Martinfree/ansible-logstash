@@ -14,7 +14,6 @@
   become: yes
   tasks:
     - include_vars: ../vars/logstash-cfg.yml
-    - include_vars: ../vars/elastic-cfg.yml
     - import_tasks: ansible-logstash.yml
     
     - name: "Config logstash javammachine"
@@ -57,6 +56,7 @@
   hosts: filebeat-server
   gather_facts: yes
   become: yes
+  tasks:
     - include_vars: ../vars/logstash-cfg.yml
     - include_vars: ../vars/filebeat-cfg.yml
 

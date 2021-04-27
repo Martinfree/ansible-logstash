@@ -1,9 +1,9 @@
 output { 
 	elasticsearch {
-		hosts => ["http://{{el_ip}}/elasticsearch/"]
+		hosts => ["http://{{nginx_ip}}/elasticsearch/"]
 		index => "test-%{+YYYY.MM.ww}"
-		user => "nginx-user"
-		password => "CXjyBbBdAwr4XQng"
+		user => "user"
+		password => "user"
 		port => 80
 	}
 } 

@@ -9,13 +9,14 @@
   apt_key:
     url: "{{ GPG_KEY }}"
     state: present
+    validate_certs: no
 
 - name:
   apt:
     name: apt-transport-https
     state: latest
 
-- name: "add elastic repo"
+- name: "add repo"
   shell: "echo deb 'https://artifacts.elastic.co/packages/7.x/apt stable main' \
           | sudo tee /etc/apt/sources.list.d/elastic-7.x.list"
 
