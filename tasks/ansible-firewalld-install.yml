@@ -1,0 +1,26 @@
+#check default firewall------|
+#                       if firewalld -|        
+#     |             |---------|       |
+#     V      (False)|                 |
+#                   |                 |
+#             Install firewalld       |(True)
+#                   |                 |
+# OK _______________V_________________|
+#                       
+# 
+
+
+- name: "stop ufw"
+  service:
+    name: ufw
+    state: stopped
+  ignore_errors: true
+
+- name: "delete ufw -> install firewalld"
+  apt:
+    name: ufw
+    state: absent
+  apt:
+    name: firewalld
+    state: present
+

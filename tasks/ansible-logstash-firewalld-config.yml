@@ -1,0 +1,21 @@
+
+
+- firewalld:
+    port: "22/tcp"
+    permanent: yes
+    state: enabled
+
+
+- name: "Except logstash in firewalld"
+  firewalld:
+    zone: public
+    port: "{{ logst_port }}/tcp"
+    permanent: yes
+    state: enabled
+
+- name: "Start firewalld"
+  service:
+    name: firewalld
+    state: restarted
+
+

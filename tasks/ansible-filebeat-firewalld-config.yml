@@ -1,0 +1,13 @@
+
+
+- firewalld:
+    port: "22/tcp"
+    permanent: yes
+    state: enabled
+
+- name: "Start firewalld"
+  service:
+    name: firewalld
+    state: restarted
+
+

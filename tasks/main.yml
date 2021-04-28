@@ -86,3 +86,30 @@
     - filebeat
     - filebeat-logstash
 
+- name: "Server firewall setup"                                                                             
+  hosts: test-server                                                                                                                                               
+  gather_facts: yes                                                                                                                                                       
+  become: yes                                                                                                                                                       
+  tasks:                                                                                                                                                                       
+    - include_vars: ../vars/filebeat-cfg.yml                                                                                                                              
+    - package_facts:                                                                                                                                                       
+        manager: auto                                                                                                                                                             
+    - import_tasks: ansible-firewalld-install.yml                                                                                                                        
+      when: " 'firewalld' not in ansible_facts.packages "                                                                                                                 
+    - import_tasks: ansible-filebeat-firewalld-config.yml                                                                                                                 
+  tags:                                         
+    - config-firewall
+
+- name: "Logstash firewall setup"                                                                             
+  hosts: logstash-server                                                                                                                                                           
+  gather_facts: yes                                                                                                                                                       
+  become: yes                                                                                                                                                       
+  tasks:                                                                                                                                                                       
+    - include_vars: ../vars/logstash-cfg.yml                                                                                                                              
+    - package_facts:                                                                                                                                                       
+        manager: auto                                                                                                                                                             
+    - import_tasks: ansible-firewalld-install.yml                                                                                                                        
+      when: " 'firewalld' not in ansible_facts.packages "                                                                                                                 
+    - import_tasks: ansible-logstash-firewalld-config.yml                                                                                                                                 
+  tags:                                                                                                                                                                  
+    - config-firewall
