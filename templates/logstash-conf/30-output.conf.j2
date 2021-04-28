@@ -1,8 +1,29 @@
-output { 
-	elasticsearch {
-		hosts => ["http://{{nginx_ip}}/elasticsearch/"]
-		index => "test-%{+YYYY.MM.ww}"
-		user => "user"
-		password => "user"
-	}
+output {
+        if "nginx" in [tags] {
+        elasticsearch {
+                hosts => ["http://{nginx_ip}:{{el_port}}/"]
+                index => "nginx-%{+YYYY.MM.ww}"
+                user => "user"
+                password => "user"
+        }
+        } else if "logstash" in [tags] {
+        elasticsearch {
+                hosts => ["http://{nginx_ip}:{{el_port}}/"]
+                index => "logstash-%{+YYYY.MM.ww}"
+                user => "user"
+                password => "user"
+        }} else if "elastic" in [tags] {
+        elasticsearch {
+                hosts => ["http://{nginx_ip}:{{el_port}}/"]
+                index => "elastic-%{+YYYY.MM.ww}"
+                user => "user"
+                password => "user"
+        }} else if "vulnerable-server" in [tags] {
+        elasticsearch {
+                hosts => ["http://{nginx_ip}:{{el_port}}/"]
+                index => "vulnerable-server-%{+YYYY.MM.ww}"
+                user => "user"
+                password => "user"
+        }}
 } 
+ 

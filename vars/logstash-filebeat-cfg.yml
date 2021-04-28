@@ -1,0 +1,5 @@
+filebeat: true
+filebeat_service: logstash system
+filebeat_path: /etc/filebeat/
+
+

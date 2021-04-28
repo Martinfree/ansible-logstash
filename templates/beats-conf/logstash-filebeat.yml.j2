@@ -26,6 +26,7 @@ filebeat.inputs:
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
     - /var/log/*.log
+		- /var/log/logstash/*.log
     #- c:\programdata\elasticsearch\logs\*
 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
@@ -119,7 +120,7 @@ setup.template.settings:
 
 # The tags of the shipper are included in their own field with each
 # transaction published.
-tags: ["vulnerable-server"]
+tags: ["logstash"]
 
 # Optional fields that you can specify to add additional information to the
 # output.
@@ -188,7 +189,7 @@ setup.kibana:
 # ------------------------------ Logstash Output -------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["{{logstash_ip}}:{{ logst_port }}"]
+  hosts: ["127.0.0.1:{{ logst_port }}"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications

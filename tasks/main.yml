@@ -53,16 +53,36 @@
         dest: "/etc/logstash/conf.d/30-output.conf"
     
 - name: "Setup filebeat server"
-  hosts: filebeat-server
+  hosts: test-server
   gather_facts: yes
   become: yes
   tasks:
     - include_vars: ../vars/logstash-cfg.yml
-    - include_vars: ../vars/filebeat-cfg.yml
+    - include_vars: ../vars/logstash-filebeat-cfg.yml
 
     - import_tasks: ansible-filebeats.yml
     - name: "Copy default settings"
       template:
         src: ../templates/beats-conf/filebeat.yml.j2
         dest: "/etc/filebeat/filebeat.yml"
+  tags:
+    - filebeat
+    - filebeat-vulnerable-logstash
+
+- name: "Setup logstash filebeat server"
+  hosts: logstash-server
+  gather_facts: yes
+  become: yes
+  tasks:
+    - include_vars: ../vars/logstash-cfg.yml
+    - include_vars: ../vars/logstash-filebeat-cfg.yml
+
+    - import_tasks: ansible-filebeats.yml
+    - name: "Copy default settings"
+      template:
+        src: ../templates/beats-conf/logstash-filebeat.yml.j2
+        dest: "/etc/filebeat/filebeat.yml"
+  tags:
+    - filebeat
+    - filebeat-logstash
 

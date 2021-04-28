@@ -1,4 +1,5 @@
 [logstash-server]
+172.24.201.35 ansible_user=userconf ansible_password=userconf ansible_become_password=userconf
 
-[filebeat-server]
-
+[test-server]
+172.24.201.34 ansible_user=userconf ansible_password=userconf ansible_become_password=userconf
